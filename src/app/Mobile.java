@@ -6,8 +6,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 abstract public class Mobile {
-	int startingX;
-	int startingY;
+	int posX;
+	int posY;
+	int sizeX;
+	int sizeY;
+	int delta;
 	
 	// Sprite fields.
 	private static BufferedImage sprite = null;
@@ -15,4 +18,6 @@ abstract public class Mobile {
 	private static String spritePath;
 	
 	abstract void update();
+	
+	
 }
