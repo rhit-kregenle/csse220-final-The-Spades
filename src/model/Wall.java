@@ -1,4 +1,4 @@
-package app;
+package model;
 
 public class Wall implements Interactable {
 	int x1;
