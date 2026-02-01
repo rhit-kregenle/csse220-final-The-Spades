@@ -1,7 +1,9 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.JComponent;
 
@@ -24,9 +26,15 @@ public class GameComponent extends JComponent {
 	super.paintComponent(g);
 	Graphics2D g2 = (Graphics2D) g;
 
+	Color origColor = g2.getColor();
+	
 	// Minimal placeholder to test  it’s running
-	g2.drawString("Final Project Starter: UI is running ✅", 20, 30);
-
+	Rectangle2D.Double rect = new Rectangle2D.Double(0,0,600,600);
+	g2.setColor(Color.GREEN);
+	g2.fill(rect);
+	
+	g2.setColor(origColor);
+	
 
 	// TODO: draw based on model state
 	}
