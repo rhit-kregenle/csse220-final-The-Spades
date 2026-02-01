@@ -66,4 +66,16 @@ public class Player extends Mobile {
 			posX += delta;
 		}
 	}
+	
+	public void flip() {
+		if (direction == Direction.UP) {
+			direction = Direction.DOWN;
+		} else if (direction == Direction.DOWN) {
+			direction = Direction.UP;
+		} else if (direction == Direction.LEFT) {
+			direction = Direction.RIGHT;
+		} else if (direction == Direction.RIGHT) {
+			direction = Direction.LEFT;
+		}
+	}
 }
