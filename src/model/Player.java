@@ -78,4 +78,12 @@ public class Player extends Mobile {
 			direction = Direction.LEFT;
 		}
 	}
+	
+	public int getPosX() {
+		return posX;
+	}
+	
+	public int getPosY() {
+		return posY;
+	}
 }
