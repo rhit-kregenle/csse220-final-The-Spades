@@ -13,12 +13,14 @@ import javax.swing.Timer;
 
 import model.Direction;
 import model.Player;
+import model.Zombie;
 import model.GameModel;
 
 public class GameComponent extends JComponent {
 
 	
 	private Player player = new Player(300,500,4,20,20);
+	private Zombie zombie = new Zombie(10, 310, Direction.RIGHT, 550);
 	private Timer timer;
 	private GameModel model;
 
@@ -29,6 +31,7 @@ public class GameComponent extends JComponent {
 		
 		timer = new Timer(50, e -> {
 			player.update();
+			zombie.update();
 			repaint();
 			});
 		timer.start();
@@ -70,6 +73,7 @@ public class GameComponent extends JComponent {
 	g2.setColor(origColor);
 	
 	player.draw(g2);
+	zombie.draw(g2);
 	
 
 	// TODO: draw based on model state
