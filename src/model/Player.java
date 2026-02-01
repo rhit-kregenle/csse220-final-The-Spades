@@ -23,6 +23,7 @@ public class Player extends Mobile {
 		this.sizeY = sizeY;
 		this.direction = Direction.UP;
 		loadSpriteOnce();
+		this.delta = 5;
 	}
 
 	private static void loadSpriteOnce() {
@@ -56,9 +57,9 @@ public class Player extends Mobile {
 
 	public void update() {
 		if (direction == Direction.UP) {
-			posY += delta;
-		} else if (direction == Direction.DOWN) {
 			posY -= delta;
+		} else if (direction == Direction.DOWN) {
+			posY += delta;
 		} else if (direction == Direction.LEFT) {
 			posX -= delta;
 		} else if (direction == Direction.RIGHT) {

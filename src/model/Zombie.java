@@ -1,5 +1,12 @@
 package model;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 /**
  * An enemy in the form of a Zombie. As a moving object, it is a child of
  * Mobile.
@@ -15,6 +22,8 @@ public class Zombie extends Mobile {
 	int traverseLength;
 	int startingX;
 	int startingY;
+	private static BufferedImage sprite = null;
+	private static boolean triedLoad = false;
 
 	
 	/**
@@ -30,7 +39,7 @@ public class Zombie extends Mobile {
 	 * 
 	 * @return Zombie
 	 */
-	public Zombie(int startingX, int startingY, Direction traverseDirection, int traverseLength, int speed) {
+	public Zombie(int startingX, int startingY, Direction traverseDirection, int traverseLength, int speed, int sizeX, int sizeY) {
 		this.posX = startingX;
 		this.posY = startingY;
 		this.startingX = startingX;
@@ -38,6 +47,9 @@ public class Zombie extends Mobile {
 		this.traverseDirection = traverseDirection;
 		this.traverseLength = traverseLength;
 		this.delta = speed;
+		this.sizeX = sizeX;
+		this.sizeY = sizeY;
+		loadSpriteOnce();
 	}
 	
 	public Zombie(int startingX, int startingY, Direction traverseDirection, int traverseLength) {
@@ -48,6 +60,8 @@ public class Zombie extends Mobile {
 		this.traverseDirection = traverseDirection;
 		this.traverseLength = traverseLength;
 		this.delta = 5;
+		this.sizeX = 20;
+		this.sizeY = 20;
 	}
 	
 	/**
@@ -56,7 +70,7 @@ public class Zombie extends Mobile {
 	@Override
 	public void update() {
 		if (traverseDirection == Direction.DOWN) {
-			if (startingY < posY & posY < traverseLength + startingY) {
+			if (startingY <= posY & posY < traverseLength + startingY) {
 				posY += delta;
 			} else {
 				traverseDirection = Direction.UP;
@@ -72,7 +86,7 @@ public class Zombie extends Mobile {
 		}
 		
 		if (traverseDirection == Direction.RIGHT) {
-			if (startingX < posX & posX < traverseLength + startingX) {
+			if (startingX <= posX & posX < traverseLength + startingX) {
 				posX += delta;
 			} else {
 				traverseDirection = Direction.LEFT;
@@ -85,6 +99,31 @@ public class Zombie extends Mobile {
 			} else {
 				traverseDirection = Direction.RIGHT;
 			}
+		}
+	}
+	
+	private static void loadSpriteOnce() {
+		if (triedLoad)
+			return;
+		triedLoad = true;
+
+		try {
+			// tennis.png must be in the SAME package as Ball.java
+			sprite = ImageIO.read(Zombie.class.getResource("tennis.png"));
+		} catch (IOException | IllegalArgumentException ex) {
+			sprite = null;
+		}
+	}
+	
+	public void draw(Graphics2D g2) {
+
+		if (sprite != null) {
+			// sprite replaces the circle
+			g2.drawImage(sprite, posX, posY, sizeX, sizeY, null);
+		} else {
+			// fallback if sprite failed to load
+			g2.setColor(Color.BLUE);
+			g2.fillOval(posX, posY, sizeX, sizeY);
 		}
 	}
 
