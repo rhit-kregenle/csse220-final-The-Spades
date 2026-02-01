@@ -11,8 +11,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 
-import app.Direction;
-import app.Player;
+import model.Direction;
+import model.Player;
 import model.GameModel;
 
 public class GameComponent extends JComponent {
