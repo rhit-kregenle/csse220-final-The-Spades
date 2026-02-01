@@ -1,4 +1,4 @@
-package app;
+package model;
 
 /**
  * An enemy in the form of a Zombie. As a moving object, it is a child of
