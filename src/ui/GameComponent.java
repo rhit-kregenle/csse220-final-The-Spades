@@ -13,6 +13,7 @@ import javax.swing.Timer;
 
 import model.Direction;
 import model.Player;
+import model.Wall;
 import model.Zombie;
 import model.GameModel;
 
@@ -23,6 +24,10 @@ public class GameComponent extends JComponent {
 	private Zombie zombie = new Zombie(10, 310, Direction.RIGHT, 550);
 	private Timer timer;
 	private GameModel model;
+	
+	Wall[] walls = {new Wall(0,150,100,150), new Wall(100,100,100,150), new Wall(100,100,200,100), new Wall(200,000,200,100), new Wall(500,000,500,100), new Wall(500,100,600,100), new Wall(000,200,200,200), new Wall(100,300,300,300), new Wall(300,200,300,300), new Wall(300,200,550,200), new Wall(300,350,600,350), new Wall(050,400,250,400), new Wall(250,400,250,600), new Wall(000,500,200,500), new Wall(350,500,350,600),new Wall(350,500,450,500), new Wall(550,500,600,500)};
+
+	
 
 
 	public GameComponent(GameModel model) {
@@ -30,6 +35,19 @@ public class GameComponent extends JComponent {
 		setFocusable(true);
 		
 		timer = new Timer(50, e -> {
+			for (int i = 0; i < walls.length; i++) {
+				if (walls[i].getX1() == walls[i].getX2()) {
+					if (player.getPosX() <= walls[i].getX1() && walls[i].getX1() <= player.getPosX() + 20 && ((walls[i].getY1() <= player.getPosY() && player.getPosY() <= walls[i].getY2()) || (walls[i].getY1() <= player.getPosY() + 20 && player.getPosY() + 20 <= walls[i].getY2()))) {
+						player.flip();
+						break;
+					}
+				} else {
+					if (player.getPosY() <= walls[i].getY1() && walls[i].getY1() <= player.getPosY() + 20 && ((walls[i].getX1() <= player.getPosX() && player.getPosX() <= walls[i].getX2()) || (walls[i].getX1() <= player.getPosX() + 20 && player.getPosX() + 20 <= walls[i].getX2()))) {
+						player.flip();
+						break;
+					}
+				}
+			}
 			player.update();
 			zombie.update();
 			repaint();
@@ -75,6 +93,7 @@ public class GameComponent extends JComponent {
 	player.draw(g2);
 	zombie.draw(g2);
 	
+	for (int i = 0; i < walls.length; i++) walls[i].draw(g2);
 
 	// TODO: draw based on model state
 	}
