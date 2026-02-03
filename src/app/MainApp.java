@@ -1,5 +1,12 @@
 package app;
 
+/**
+ * The main class that runs the game when it starts.
+ * 
+ * 
+ * @author Manas Paranjape
+ */
+
 import javax.swing.SwingUtilities;
 
 import ui.GameWindow;

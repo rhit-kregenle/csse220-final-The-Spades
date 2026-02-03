@@ -1,5 +1,13 @@
 package model;
 
+/**
+ * As a moving object, it is a child of Mobile.
+ * 
+ * Player moves and changes direction based on inputs.
+ * 
+ * @author Leif Kregenow
+ */
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

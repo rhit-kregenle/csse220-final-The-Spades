@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * Mobile is a super class for Player and Zombie.
+ * 
+ * @author Manas Paranjape
+ */
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
