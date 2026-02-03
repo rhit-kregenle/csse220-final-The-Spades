@@ -62,6 +62,7 @@ public class Zombie extends Mobile {
 		this.delta = 5;
 		this.sizeX = 20;
 		this.sizeY = 20;
+		loadSpriteOnce();
 	}
 	
 	/**

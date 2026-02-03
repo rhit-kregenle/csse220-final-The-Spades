@@ -1,5 +1,11 @@
 package model;
 
+/**
+ * Wall have the positions of the lines draw to make the maze.
+ * 
+ * @author Luc Kolczak
+ */
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
