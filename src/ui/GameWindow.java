@@ -8,14 +8,14 @@ public class GameWindow {
 
 	public static void show() {
 		// Minimal model instance (empty for now, by design)
-		GameModel model = new GameModel();
+		
 
 
 		JFrame frame = new JFrame("CSSE220 Final Project");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-		frame.add(new GameComponent(model));
+		frame.add(new GameComponent(new GameModel()));
 
 
 		frame.setSize(600, 600);
