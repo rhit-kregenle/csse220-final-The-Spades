@@ -22,8 +22,9 @@ import model.GameModel;
 
 public class GameComponent extends JComponent {
 
-	private Player player = new Player(300, 500, 4, 20, 20);
-	private Zombie zombie = new Zombie(10, 310, Direction.RIGHT, 550);
+	
+	private Player player = new Player(300,500,4,20,20);
+	private Zombie[] zombies = {new Zombie(10, 310, Direction.RIGHT, 550), new Zombie(10, 360, Direction.RIGHT, 550), new Zombie(10, 170, Direction.RIGHT, 550), new Zombie(10, 520, Direction.RIGHT, 200), new Zombie(10, 460, Direction.RIGHT, 200), new Zombie(480, 380, Direction.DOWN, 160), new Zombie(565, 100, Direction.DOWN, 215), new Zombie(10, 230, Direction.DOWN, 250), new Zombie(250, 10, Direction.DOWN, 250)};
 	private Timer timer;
 	private GameModel model;
 
@@ -44,20 +45,14 @@ public class GameComponent extends JComponent {
 			player.update();
 			for (int i = 0; i < walls.length; i++) {
 				if (walls[i].getX1() == walls[i].getX2()) {
-					if (player.getPosX() <= walls[i].getX1() && walls[i].getX1() <= player.getPosX() + 20
-							&& ((walls[i].getY1() <= player.getPosY() && player.getPosY() <= walls[i].getY2())
-									|| (walls[i].getY1() <= player.getPosY() + 20
-											&& player.getPosY() + 20 <= walls[i].getY2()))) {
+					if (player.getPosX() <= walls[i].getX1() && walls[i].getX1() <= player.getPosX() + player.getSizeX() && ((walls[i].getY1() <= player.getPosY() && player.getPosY() <= walls[i].getY2()) || (walls[i].getY1() <= player.getPosY() + player.getSizeY() && player.getPosY() + player.getSizeY() <= walls[i].getY2()))) {
 						player.flip();
 						player.update();
 						player.update();
 						break;
 					}
 				} else {
-					if (player.getPosY() <= walls[i].getY1() && walls[i].getY1() <= player.getPosY() + 20
-							&& ((walls[i].getX1() <= player.getPosX() && player.getPosX() <= walls[i].getX2())
-									|| (walls[i].getX1() <= player.getPosX() + 20
-											&& player.getPosX() + 20 <= walls[i].getX2()))) {
+					if (player.getPosY() <= walls[i].getY1() && walls[i].getY1() <= player.getPosY() + player.getSizeY() && ((walls[i].getX1() <= player.getPosX() && player.getPosX() <= walls[i].getX2()) || (walls[i].getX1() <= player.getPosX() + player.getSizeX() && player.getPosX() + player.getSizeX() <= walls[i].getX2()))) {
 						player.flip();
 						player.update();
 						player.update();
@@ -65,7 +60,37 @@ public class GameComponent extends JComponent {
 					}
 				}
 			}
-			zombie.update();
+			for (int i = 0; i < zombies.length; i++) {
+			    for (int j = i + 1; j < zombies.length; j++) {
+			        Zombie e1 = zombies[i];
+			        Zombie e2 = zombies[j];
+
+			        if (e1.getZombieBounds().intersects(e2.getZombieBounds())) {
+			            e1.flip();
+			            e2.flip();
+			        }
+			    }
+			}
+			
+			for (Zombie zombie: zombies) {
+					
+				zombie.update();
+				
+				if (player.getPlayerBounds().intersects(zombie.getZombieBounds())) {
+					if (player.getIsShoving() >= 5) {
+						zombie.getShoved(player.getShovingDirection());
+						player.flip();
+						player.update();
+						player.update();
+					} else {
+						player.isHit();
+						zombie.flip();
+						player.update();
+						player.update();
+					}
+				}
+			}
+			
 			repaint();
 		});
 		timer.start();
@@ -82,7 +107,10 @@ public class GameComponent extends JComponent {
 				} else if (e.getKeyCode() == KeyEvent.VK_D) {
 					player.handleInput(Direction.RIGHT);
 				}
-			}
+			    else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				      player.shove();
+				}
+			  }
 		});
 	}
 
@@ -91,7 +119,21 @@ public class GameComponent extends JComponent {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 
-		Color origColor = g2.getColor();
+	Color origColor = g2.getColor();
+	
+	// Minimal placeholder to test  it’s running
+	Rectangle2D.Double rect = new Rectangle2D.Double(0,0,600,600);
+	g2.setColor(Color.GREEN);
+	g2.fill(rect);
+	
+	g2.setColor(origColor);
+	
+	player.draw(g2);
+	for (Zombie zombie: zombies) {
+		zombie.draw(g2);
+	}
+	
+	for (int i = 0; i < walls.length; i++) walls[i].draw(g2);
 
 		// Minimal placeholder to test it’s running
 		Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, 600, 600);
