@@ -133,24 +133,13 @@ public class GameComponent extends JComponent {
 		zombie.draw(g2);
 	}
 	
-	for (int i = 0; i < walls.length; i++) walls[i].draw(g2);
+	drawHUD(g2);
 
-		// Minimal placeholder to test it’s running
-		Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, 600, 600);
-		g2.setColor(Color.GREEN);
-		g2.fill(rect);
-
-		g2.setColor(origColor);
-
-		player.draw(g2);
-		zombie.draw(g2);
-		
-		drawHUD(g2);
-
-		for (int i = 0; i < walls.length; i++)
-			walls[i].draw(g2);
-		// TODO: draw based on model state
+	for (int i = 0; i < walls.length; i++)
+		walls[i].draw(g2);
+	// TODO: draw based on model state
 	}
+	
 	
 	private void drawHUD(Graphics2D g) {
 		Font font = new Font("Arial", Font.PLAIN, 20);
