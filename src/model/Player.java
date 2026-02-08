@@ -10,6 +10,7 @@ package model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -21,6 +22,8 @@ public class Player extends Mobile {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
 	Direction direction;
+	private int isShoving;
+	private Direction shovingDirection;
 
 	public Player(int startingX, int startingY, int maxLives, int sizeX, int sizeY) {
 		this.posX = startingX;
@@ -32,6 +35,7 @@ public class Player extends Mobile {
 		this.direction = Direction.UP;
 		loadSpriteOnce();
 		this.delta = 5;
+		this.isShoving = 0;
 	}
 
 	private static void loadSpriteOnce() {
@@ -73,6 +77,23 @@ public class Player extends Mobile {
 		} else if (direction == Direction.RIGHT) {
 			posX += delta;
 		}
+		
+		if (isShoving > 0) {
+			isShoving--;
+			if (isShoving == 5) {
+				if (shovingDirection == Direction.UP) {
+					posY += sizeY;
+					sizeY /= 2;
+				} else if (shovingDirection == Direction.DOWN) {
+					sizeY /= 2;
+				} else if (shovingDirection == Direction.LEFT) {
+					posX += sizeX;
+					sizeX /= 2;
+				} else if (shovingDirection == Direction.RIGHT) {
+					sizeX /= 2;
+				}
+			}
+		}
 	}
 	
 	public void flip() {
@@ -93,5 +114,55 @@ public class Player extends Mobile {
 	
 	public int getPosY() {
 		return posY;
+	}
+	
+	public int getSizeX() {
+		return sizeX;
+	}
+	
+	public int getSizeY() {
+		return sizeY;
+	}
+	
+	public int getIsShoving() {
+		return isShoving;
+	}
+	
+	public Direction getShovingDirection() {
+		return shovingDirection;
+	}
+	
+	public Rectangle getPlayerBounds() {
+	    Rectangle r = new Rectangle(
+	    		posX,
+	    		posY,
+	    		sizeX,
+	    		sizeY
+	    );
+	    return r;
+	}
+	
+	public void shove() {
+		if (isShoving == 0) {
+			if (direction == Direction.UP) {
+				posY -= sizeY;
+				sizeY *= 2;
+			} else if (direction == Direction.DOWN) {
+				sizeY *= 2;
+			} else if (direction == Direction.LEFT) {
+				posX -= sizeX;
+				sizeX *= 2;
+			} else if (direction == Direction.RIGHT) {
+				sizeX *= 2;
+			}
+			isShoving = 10;
+			shovingDirection = direction;
+		}
+		
+	}
+	
+	public void isHit(){
+		currentLives -= 1;
+		flip();
 	}
 }

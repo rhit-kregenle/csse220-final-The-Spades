@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ public class Zombie extends Mobile {
 	int startingY;
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
+	Boolean onPath;
 
 	
 	/**
@@ -50,6 +52,7 @@ public class Zombie extends Mobile {
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		loadSpriteOnce();
+		this.onPath = true;
 	}
 	
 	public Zombie(int startingX, int startingY, Direction traverseDirection, int traverseLength) {
@@ -63,6 +66,7 @@ public class Zombie extends Mobile {
 		this.sizeX = 20;
 		this.sizeY = 20;
 		loadSpriteOnce();
+		this.onPath = true;
 	}
 	
 	/**
@@ -70,35 +74,53 @@ public class Zombie extends Mobile {
 	 */
 	@Override
 	public void update() {
-		if (traverseDirection == Direction.DOWN) {
-			if (startingY <= posY & posY < traverseLength + startingY) {
-				posY += delta;
-			} else {
-				traverseDirection = Direction.UP;
+		if (onPath) {
+			if (traverseDirection == Direction.DOWN) {
+				if (startingY <= posY & posY < traverseLength + startingY) {
+					posY += delta;
+				} else {
+					traverseDirection = Direction.UP;
+				}
 			}
-		}
-		
-		if (traverseDirection == Direction.UP) {
-			if (startingY != posY) {
-				posY -= delta;
-			} else {
-				traverseDirection = Direction.DOWN;
+			
+			if (traverseDirection == Direction.UP) {
+				if (startingY != posY) {
+					posY -= delta;
+				} else {
+					traverseDirection = Direction.DOWN;
+				}
 			}
-		}
-		
-		if (traverseDirection == Direction.RIGHT) {
-			if (startingX <= posX & posX < traverseLength + startingX) {
-				posX += delta;
-			} else {
-				traverseDirection = Direction.LEFT;
+			
+			if (traverseDirection == Direction.RIGHT) {
+				if (startingX <= posX & posX < traverseLength + startingX) {
+					posX += delta;
+				} else {
+					traverseDirection = Direction.LEFT;
+				}
 			}
-		}
-		
-		if (traverseDirection == Direction.LEFT) {
-			if (startingX != posX) {
-				posX -= delta;
+			
+			if (traverseDirection == Direction.LEFT) {
+				if (startingX != posX) {
+					posX -= delta;
+				} else {
+					traverseDirection = Direction.RIGHT;
+				}
+			}
+		} else {
+			if (traverseDirection == Direction.LEFT || traverseDirection == Direction.RIGHT) {
+				if (posY > startingY) {
+					posY -= 1;
+				} else {
+					posY += 1;
+				}
+				if (posY == startingY) onPath = true;
 			} else {
-				traverseDirection = Direction.RIGHT;
+				if (posX > startingX) {
+					posX -= 1;
+				} else {
+					posX += 1;
+				}
+				if (posX == startingX) onPath = true;
 			}
 		}
 	}
@@ -125,6 +147,42 @@ public class Zombie extends Mobile {
 			// fallback if sprite failed to load
 			g2.setColor(Color.BLUE);
 			g2.fillOval(posX, posY, sizeX, sizeY);
+		}
+	}
+	
+	public Rectangle getZombieBounds() {
+	    Rectangle r = new Rectangle(
+	    		posX,
+	    		posY,
+	    		sizeX,
+	    		sizeY
+	    );
+	    return r;
+	}
+	
+	public void getShoved(Direction dir) {
+		if (dir == Direction.UP) {
+			posY -= 10;
+		} else if (dir == Direction.DOWN) {
+			posY += 10;
+		} else if (dir == Direction.LEFT) {
+			posX -= 10;
+		} else if (dir == Direction.RIGHT) {
+			posX += 10;
+		}
+		flip();
+		onPath = false;
+	}
+	
+	public void flip() {
+		if (traverseDirection == Direction.UP) {
+			traverseDirection = Direction.DOWN;
+		} else if (traverseDirection == Direction.DOWN) {
+			traverseDirection = Direction.UP;
+		} else if (traverseDirection == Direction.LEFT) {
+			traverseDirection = Direction.RIGHT;
+		} else if (traverseDirection == Direction.RIGHT) {
+			traverseDirection = Direction.LEFT;
 		}
 	}
 
