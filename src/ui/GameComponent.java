@@ -83,7 +83,8 @@ public class GameComponent extends JComponent {
 						player.update();
 						player.update();
 					} else {
-						player.isHit();
+						this.model.livesDecrease();
+						player.flip();
 						zombie.flip();
 						player.update();
 						player.update();

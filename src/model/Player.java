@@ -161,8 +161,4 @@ public class Player extends Mobile {
 		
 	}
 	
-	public void isHit(){
-		currentLives -= 1;
-		flip();
-	}
 }
