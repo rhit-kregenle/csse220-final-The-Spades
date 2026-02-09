@@ -2,6 +2,6 @@ package model;
 
 public interface Interactable {
 
-	void whenInteract(Player player);
+	void whenInteract(Player player, GameModel model);
 
 }
