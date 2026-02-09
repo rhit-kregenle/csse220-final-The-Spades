@@ -132,7 +132,7 @@ public class Zombie extends Mobile {
 
 		try {
 			// tennis.png must be in the SAME package as Ball.java
-			sprite = ImageIO.read(Zombie.class.getResource("tennis.png"));
+			sprite = ImageIO.read(Zombie.class.getResource("zombie.png"));
 		} catch (IOException | IllegalArgumentException ex) {
 			sprite = null;
 		}
