@@ -32,7 +32,7 @@ public class Wall implements Interactable {
 
 	}
 
-	public void whenInteract(Player player) {
+	public void whenInteract(Player player, GameModel model) {
 		player.flip();
 	}
 	
