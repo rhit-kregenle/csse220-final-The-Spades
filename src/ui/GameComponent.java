@@ -28,6 +28,7 @@ public class GameComponent extends JComponent {
 	private Zombie[] zombies = {new Zombie(10, 310, Direction.RIGHT, 550), new Zombie(10, 360, Direction.RIGHT, 550), new Zombie(10, 170, Direction.RIGHT, 550), new Zombie(10, 520, Direction.RIGHT, 200), new Zombie(10, 460, Direction.RIGHT, 200), new Zombie(480, 380, Direction.DOWN, 160), new Zombie(565, 100, Direction.DOWN, 215), new Zombie(10, 230, Direction.DOWN, 250), new Zombie(250, 10, Direction.DOWN, 250)};
 	private Timer timer;
 	private GameModel model;
+	private GameWindow window;
 	
 	//gems declaration 
 	private Gem gem1 = new Gem(360,550);
@@ -45,13 +46,17 @@ public class GameComponent extends JComponent {
 
 	
 	
-	public GameComponent(GameModel model) {
+	public GameComponent(GameModel model, GameWindow window) {
 		this.model = model;
+		this.window = window;
 
 		setFocusable(true);
+		requestFocus();
 
 		timer = new Timer(50, e -> {
 			player.update();
+			requestFocus();
+			
 			for (int i = 0; i < walls.length; i++) {
 				if (walls[i].getX1() == walls[i].getX2()) {
 					if (player.getPosX() <= walls[i].getX1() && walls[i].getX1() <= player.getPosX() + player.getSizeX() && ((walls[i].getY1() <= player.getPosY() && player.getPosY() <= walls[i].getY2()) || (walls[i].getY1() <= player.getPosY() + player.getSizeY() && player.getPosY() + player.getSizeY() <= walls[i].getY2()))) {
@@ -69,17 +74,8 @@ public class GameComponent extends JComponent {
 					}
 				}
 			}
-			for (int i = 0; i < zombies.length; i++) {
-			    for (int j = i + 1; j < zombies.length; j++) {
-			        Zombie e1 = zombies[i];
-			        Zombie e2 = zombies[j];
-
-			        if (e1.getZombieBounds().intersects(e2.getZombieBounds())) {
-			            e1.flip();
-			            e2.flip();
-			        }
-			    }
-			}
+			
+			zombieFlip();
 			
 			for (Zombie zombie: zombies) {
 					
@@ -101,28 +97,16 @@ public class GameComponent extends JComponent {
 				}
 			}
 			
-//MIGHT BE BETTER WAY TO DO THIS BUT IM TIRED RN JUST TRYING TO GET LOGIC DOWN
-// INTERACTION LOGIC BETWEEN PLAYER AND GEMS, still needs points to increase 
-//cant figure out ts rn
-			if (player.getPlayerBounds().intersects(gem1.getBounds())) {
-				gem1.whenInteract(player, model);
-			}
-			if (player.getPlayerBounds().intersects(gem2.getBounds())) {
-				gem2.whenInteract(player, model);
-				
-			}
-			if (player.getPlayerBounds().intersects(gem3.getBounds())) {
-				gem3.whenInteract(player, model);
-				
-			}
-			if (player.getPlayerBounds().intersects(gem4.getBounds())) {
-				gem4.whenInteract(player, model);
-				
+			gemCollect(model);
+			
+			// This is the win condition, will be changed to reaching the exit.
+			if (zombies.length == 0) {
+				window.showStart();
 			}
 			
 			repaint();
 		});
-		timer.start();
+
 
 		addKeyListener(new KeyAdapter() {
 			@Override
@@ -141,6 +125,38 @@ public class GameComponent extends JComponent {
 				}
 			  }
 		});
+	}
+
+	private void zombieFlip() {
+		for (int i = 0; i < zombies.length; i++) {
+		    for (int j = i + 1; j < zombies.length; j++) {
+		        Zombie e1 = zombies[i];
+		        Zombie e2 = zombies[j];
+
+		        if (e1.getZombieBounds().intersects(e2.getZombieBounds())) {
+		            e1.flip();
+		            e2.flip();
+		        }
+		    }
+		}
+	}
+
+	private void gemCollect(GameModel model) {
+		if (player.getPlayerBounds().intersects(gem1.getBounds())) {
+			gem1.whenInteract(player, model);
+		}
+		if (player.getPlayerBounds().intersects(gem2.getBounds())) {
+			gem2.whenInteract(player, model);
+			
+		}
+		if (player.getPlayerBounds().intersects(gem3.getBounds())) {
+			gem3.whenInteract(player, model);
+			
+		}
+		if (player.getPlayerBounds().intersects(gem4.getBounds())) {
+			gem4.whenInteract(player, model);
+			
+		}
 	}
 
 	@Override
@@ -185,5 +201,13 @@ public class GameComponent extends JComponent {
 		g.drawString("Lives: " + this.model.getLives(), 10, 45);
 		
 		g.setColor(orig);
+	}
+	
+	private int getScore() {
+		return model.getScore();
+	}
+	
+	public void startTimer() {
+		timer.start();
 	}
 }
