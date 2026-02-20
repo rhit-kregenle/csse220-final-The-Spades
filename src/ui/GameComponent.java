@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -25,28 +26,15 @@ import model.Gem;
 public class GameComponent extends JComponent {
 
 	private Player player = new Player(300, 500, 4, 20, 20);
-	private Zombie[] zombies = { new Zombie(10, 310, Direction.RIGHT, 550), new Zombie(10, 360, Direction.RIGHT, 550),
-			new Zombie(10, 170, Direction.RIGHT, 550), new Zombie(10, 520, Direction.RIGHT, 200),
-			new Zombie(10, 460, Direction.RIGHT, 200), new Zombie(480, 380, Direction.DOWN, 160),
-			new Zombie(565, 100, Direction.DOWN, 215), new Zombie(10, 230, Direction.DOWN, 250),
-			new Zombie(250, 10, Direction.DOWN, 250) };
+	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	private Timer timer;
 	private GameModel model;
 	private GameWindow window;
 
 	// gems declaration
-	private Gem gem1 = new Gem(360, 550);
-	private Gem gem2 = new Gem(250, 250);
-	private Gem gem3 = new Gem(50, 550);
-	private Gem gem4 = new Gem(550, 250);
+	private ArrayList<Gem> gems = new ArrayList<Gem>();
 
-	Wall[] walls = { new Wall(0, 150, 100, 150), new Wall(100, 100, 100, 150), new Wall(100, 100, 200, 100),
-			new Wall(200, 000, 200, 100), new Wall(500, 000, 500, 100), new Wall(500, 100, 600, 100),
-			new Wall(000, 200, 200, 200), new Wall(100, 300, 300, 300), new Wall(300, 200, 300, 300),
-			new Wall(300, 200, 550, 200), new Wall(300, 350, 600, 350), new Wall(050, 400, 250, 400),
-			new Wall(250, 400, 250, 600), new Wall(000, 500, 200, 500), new Wall(350, 500, 350, 600),
-			new Wall(350, 500, 450, 500), new Wall(550, 500, 600, 500), new Wall(0, 0, 600, 0), new Wall(0, 0, 0, 600),
-			new Wall(600, 0, 600, 600), new Wall(0, 600, 600, 600) };
+	private ArrayList<Gem> walls = new ArrayList<Wall>();
 
 	private Exit exit = new Exit(500, 100);
 
@@ -56,6 +44,8 @@ public class GameComponent extends JComponent {
 
 		setFocusable(true);
 		requestFocus();
+
+		loadLevel(model.getLevel());
 
 		timer = new Timer(50, e -> {
 			player.update();
@@ -144,10 +134,10 @@ public class GameComponent extends JComponent {
 	}
 
 	private void zombieFlip() {
-		for (int i = 0; i < zombies.length; i++) {
-			for (int j = i + 1; j < zombies.length; j++) {
-				Zombie e1 = zombies[i];
-				Zombie e2 = zombies[j];
+		for (int i = 0; i < zombies.size(); i++) {
+			for (int j = i + 1; j < zombies.size(); j++) {
+				Zombie e1 = zombies.get(i);
+				Zombie e2 = zombies.get(j);
 
 				if (e1.getZombieBounds().intersects(e2.getZombieBounds())) {
 					e1.flip();
@@ -201,10 +191,9 @@ public class GameComponent extends JComponent {
 		for (int i = 0; i < walls.length; i++)
 			walls[i].draw(g2);
 		// TODO: draw based on model state
-		gem1.draw(g2);
-		gem2.draw(g2);
-		gem3.draw(g2);
-		gem4.draw(g2);
+		for (Gem g : gems) {
+			g.draw(g2);
+		}
 	}
 
 	private void drawHUD(Graphics2D g) {
@@ -226,5 +215,9 @@ public class GameComponent extends JComponent {
 
 	public void startTimer() {
 		timer.start();
+	}
+
+	private void loadLevel() {
+
 	}
 }
