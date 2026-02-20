@@ -362,6 +362,7 @@ public class GameComponent extends JComponent {
 
 			scanner.close();
 		} catch (IOException ex) {
+			timer.stop();
 			this.window.showStart(model.getScore());
 		}
 	}
