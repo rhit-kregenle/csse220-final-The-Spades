@@ -24,6 +24,8 @@ public class Player extends Mobile {
 	Direction direction;
 	private int isShoving;
 	private Direction shovingDirection;
+	private boolean hasKey;
+	
 
 	public Player(int startingX, int startingY, int maxLives, int sizeX, int sizeY) {
 		this.posX = startingX;
@@ -36,8 +38,17 @@ public class Player extends Mobile {
 		loadSpriteOnce();
 		this.delta = 5;
 		this.isShoving = 0;
+		this.hasKey=false;
 	}
 
+	 public void setHasKey(boolean value) {
+	        this.hasKey = value;
+	    }
+
+	    public boolean hasKey() {
+	        return hasKey;
+	    }
+	
 	private static void loadSpriteOnce() {
 		if (triedLoad)
 			return;
