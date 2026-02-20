@@ -23,6 +23,7 @@ public class Exit extends JComponent implements Interactable {
 	int y;
 	int sizeX = 50;
 	int sizeY = 50;
+	boolean exitable=false;
 	
 	// Sprite related fields.
 	private static BufferedImage sprite = null;
@@ -34,7 +35,15 @@ public class Exit extends JComponent implements Interactable {
 		loadSpriteOnce();
 	}
 
+	public void makeExitable(Player player)
+	{
+		if (player.hasKey())
+		{
+			exitable=true;
+		}
+	}
 	public void draw(Graphics2D g2) {
+		if(exitable) {
 		if (sprite != null) {
 			// sprite replaces the circle
 			g2.drawImage(sprite, x, y, sizeX, sizeY, null);
@@ -44,6 +53,7 @@ public class Exit extends JComponent implements Interactable {
 			g2.fillRect(x, y, sizeX, sizeY);
 		}
 	}	
+	}
 	
 	private static void loadSpriteOnce() {
 		if (triedLoad)
