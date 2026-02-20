@@ -25,7 +25,6 @@ public class Player extends Mobile {
 	private int isShoving;
 	private Direction shovingDirection;
 	private boolean hasKey;
-	
 
 	public Player(int startingX, int startingY, int maxLives, int sizeX, int sizeY) {
 		this.posX = startingX;
@@ -36,19 +35,19 @@ public class Player extends Mobile {
 		this.sizeY = sizeY;
 		this.direction = Direction.UP;
 		loadSpriteOnce();
-		this.delta = 5;
+		this.delta = 15;
 		this.isShoving = 0;
-		this.hasKey=false;
+		this.hasKey = false;
 	}
 
-	 public void setHasKey(boolean value) {
-	        this.hasKey = value;
-	    }
+	public void setHasKey() {
+		this.hasKey = true;
+	}
 
-	    public boolean hasKey() {
-	        return hasKey;
-	    }
-	
+	public boolean hasKey() {
+		return hasKey;
+	}
+
 	private static void loadSpriteOnce() {
 		if (triedLoad)
 			return;
@@ -88,7 +87,7 @@ public class Player extends Mobile {
 		} else if (direction == Direction.RIGHT) {
 			posX += delta;
 		}
-		
+
 		if (isShoving > 0) {
 			isShoving--;
 			if (isShoving == 5) {
@@ -106,7 +105,7 @@ public class Player extends Mobile {
 			}
 		}
 	}
-	
+
 	public void flip() {
 		if (direction == Direction.UP) {
 			direction = Direction.DOWN;
@@ -118,41 +117,36 @@ public class Player extends Mobile {
 			direction = Direction.LEFT;
 		}
 	}
-	
+
 	public int getPosX() {
 		return posX;
 	}
-	
+
 	public int getPosY() {
 		return posY;
 	}
-	
+
 	public int getSizeX() {
 		return sizeX;
 	}
-	
+
 	public int getSizeY() {
 		return sizeY;
 	}
-	
+
 	public int getIsShoving() {
 		return isShoving;
 	}
-	
+
 	public Direction getShovingDirection() {
 		return shovingDirection;
 	}
-	
+
 	public Rectangle getPlayerBounds() {
-	    Rectangle r = new Rectangle(
-	    		posX,
-	    		posY,
-	    		sizeX,
-	    		sizeY
-	    );
-	    return r;
+		Rectangle r = new Rectangle(posX, posY, sizeX, sizeY);
+		return r;
 	}
-	
+
 	public void shove() {
 		if (isShoving == 0) {
 			if (direction == Direction.UP) {
@@ -169,7 +163,7 @@ public class Player extends Mobile {
 			isShoving = 10;
 			shovingDirection = direction;
 		}
-		
+
 	}
-	
+
 }

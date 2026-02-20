@@ -33,6 +33,7 @@ public class GameComponent extends JComponent {
 	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	private Exit exit;
+	private key key;
 
 	public GameComponent(GameModel model, GameWindow window) {
 		this.model = model;
@@ -54,13 +55,19 @@ public class GameComponent extends JComponent {
 			zombieShove();
 
 			gemCollect(model);
+			keyCollect(model);
 			powerUpCollect(model);
 
 			// This is the win condition, will be changed to reaching the exit.
 			if (player.getPlayerBounds().intersects(exit.getBounds())) {
-				model.levelWon();
+				if (player.hasKey()) {
+					model.levelWon();
+				}
 			}
 
+			if (player.hasKey()) {
+				exit.makeExitable(player);
+			}
 			// The losing condition.
 			if (model.getLives() <= 0) {
 				this.window.showStart();
@@ -72,9 +79,9 @@ public class GameComponent extends JComponent {
 				walls = new ArrayList<Wall>();
 				wall_positions = new HashMap<>();
 				powerUps = new ArrayList<PowerUp>();
-				
+
 				loadLevel(model.getLevel());
-				
+
 				model.newLevelDrawn();
 			}
 
@@ -171,6 +178,12 @@ public class GameComponent extends JComponent {
 		}
 	}
 
+	private void keyCollect(GameModel model) {
+		if (player.getPlayerBounds().intersects(key.getBounds())) {
+			key.whenInteract(player, model);
+		}
+	}
+
 	private void powerUpCollect(GameModel model) {
 		for (PowerUp p : powerUps) {
 			if (player.getPlayerBounds().intersects(p.getBounds())) {
@@ -199,6 +212,7 @@ public class GameComponent extends JComponent {
 		}
 
 		exit.draw(g2);
+		key.draw(g2);
 
 		drawHUD(g2);
 
@@ -260,13 +274,12 @@ public class GameComponent extends JComponent {
 					} else if (c == 'G') {
 						gems.add(new Gem(xTile, yTile));
 					} else if (c == 'K') {
+						key = new key(xTile, yTile, false);
 					} else if (c == 'E') {
 						exit = new Exit(xTile, yTile);
 					} else if (c == 'p') {
 						powerUps.add(new PowerUp(xTile, yTile));
-					}
-
-					if (c != '.') {
+					} else if (c != '.') {
 						if (wall_positions.containsKey((Character) (Character.toLowerCase(c)))) {
 							ArrayList<Integer> startPos = wall_positions.get((Character) (Character.toLowerCase(c)));
 							System.out.println(startPos);
@@ -289,7 +302,7 @@ public class GameComponent extends JComponent {
 
 				row++;
 			}
- 
+
 			scanner.close();
 		} catch (IOException ex) {
 			this.window.showStart(model.getScore());
