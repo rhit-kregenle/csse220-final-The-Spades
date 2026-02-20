@@ -30,9 +30,14 @@ public class PowerUp extends JComponent implements Interactable {
 
 	public void draw(Graphics2D g2) {
 		if (!collected) {
+			if (sprite != null) {
+				// sprite replaces the circle
+				g2.drawImage(sprite, x - 2, y - 2, (int) (diameter * 1.5), (int) (diameter * 1.5), null);
+			} else {
 			g2.setStroke(new BasicStroke(4));
 			g2.setColor(this.color);
 			g2.fillOval(x, y, diameter, diameter);
+			}
 		}
 	}
 
