@@ -17,6 +17,7 @@ public class GameComponent extends JComponent {
 	private static final int TILE_SIZE = 4;
 
 	private Player player;
+	private HashMap<Character, ArrayList<Integer>> zombiePositions = new HashMap<>();
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	private Timer timer;
 	private GameModel model;
@@ -267,10 +268,6 @@ public class GameComponent extends JComponent {
 
 					if (c == 'P') {
 						player = new Player(xTile, yTile, 3, 25, 25);
-					} else if (c == 'Z') {
-						zombies.add(new Zombie(xTile, yTile, Direction.DOWN, 50));
-					} else if (c == 'z') {
-						zombies.add(new Zombie(xTile, yTile, Direction.RIGHT, 50));
 					} else if (c == 'G') {
 						gems.add(new Gem(xTile, yTile));
 					} else if (c == 'K') {
@@ -279,6 +276,71 @@ public class GameComponent extends JComponent {
 						exit = new Exit(xTile, yTile);
 					} else if (c == 'p') {
 						powerUps.add(new PowerUp(xTile, yTile));
+					} else if (isNumeric(Character.toString(c))) {
+						int num = Integer.parseInt(Character.toString(c));
+						if (num % 2 == 0) {
+							if (zombiePositions.containsKey(Integer.toString(num + 1).toCharArray()[0])) {
+								ArrayList<Integer> endPos = zombiePositions
+										.get(Integer.toString(num + 1).toCharArray()[0]);
+								int endX = endPos.get(0);
+								int endY = endPos.get(1);
+								Direction traverse = Direction.DOWN;
+								int traverse_length;
+								if (endX != xTile) {
+									if (endX > xTile) {
+										traverse = Direction.RIGHT;
+									} else {
+										traverse = Direction.LEFT;
+									}
+									traverse_length = Math.abs(endX - xTile);
+								} else {
+									if (endY > yTile) {
+										traverse = Direction.DOWN;
+									} else {
+										traverse = Direction.UP;
+									}
+									traverse_length = Math.abs(endY - yTile);
+								}
+
+								zombies.add(new Zombie(xTile, yTile, traverse, traverse_length));
+							} else {
+								ArrayList<Integer> startPos = new ArrayList<Integer>();
+								startPos.add(xTile);
+								startPos.add(yTile);
+								zombiePositions.put((Character) (c), startPos);
+							}
+						} else {
+							if (zombiePositions.containsKey(Integer.toString(num - 1).toCharArray()[0])) {
+								ArrayList<Integer> startPos = zombiePositions
+										.get(Integer.toString(num - 1).toCharArray()[0]);
+								int startX = startPos.get(0);
+								int startY = startPos.get(1);
+								Direction traverse = Direction.DOWN;
+								int traverse_length;
+								if (startX != xTile) {
+									if (startX > xTile) {
+										traverse = Direction.RIGHT;
+									} else {
+										traverse = Direction.LEFT;
+									}
+									traverse_length = Math.abs(startX - xTile);
+								} else {
+									if (startY > yTile) {
+										traverse = Direction.DOWN;
+									} else {
+										traverse = Direction.UP;
+									}
+									traverse_length = Math.abs(startY - yTile);
+								}
+
+								zombies.add(new Zombie(xTile, yTile, traverse, traverse_length));
+							} else {
+								ArrayList<Integer> startPos = new ArrayList<Integer>();
+								startPos.add(xTile);
+								startPos.add(yTile);
+								zombiePositions.put((Character) (c), startPos);
+							}
+						}
 					} else if (c != '.') {
 						if (wall_positions.containsKey((Character) (Character.toLowerCase(c)))) {
 							ArrayList<Integer> startPos = wall_positions.get((Character) (Character.toLowerCase(c)));
@@ -306,6 +368,18 @@ public class GameComponent extends JComponent {
 			scanner.close();
 		} catch (IOException ex) {
 			this.window.showStart(model.getScore());
+		}
+	}
+
+	public static boolean isNumeric(String strNum) {
+		if (strNum == null) {
+			return false;
+		}
+		try {
+			Double.parseDouble(strNum);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 }
