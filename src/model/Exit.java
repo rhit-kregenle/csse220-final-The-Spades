@@ -23,8 +23,8 @@ public class Exit extends JComponent implements Interactable {
 	int y;
 	int sizeX = 50;
 	int sizeY = 50;
-	boolean exitable=false;
-	
+	boolean exitable = false;
+
 	// Sprite related fields.
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
@@ -35,26 +35,25 @@ public class Exit extends JComponent implements Interactable {
 		loadSpriteOnce();
 	}
 
-	public void makeExitable(Player player)
-	{
-		if (player.hasKey())
-		{
-			exitable=true;
+	public void makeExitable(Player player) {
+		if (player.hasKey()) {
+			exitable = true;
 		}
 	}
+
 	public void draw(Graphics2D g2) {
-		if(exitable) {
-		if (sprite != null) {
-			// sprite replaces the circle
-			g2.drawImage(sprite, x, y, sizeX, sizeY, null);
-		} else {
-			// fallback if sprite failed to load
-			g2.setColor(Color.BLUE);
-			g2.fillRect(x, y, sizeX, sizeY);
+		if (exitable) {
+			if (sprite != null) {
+				// sprite replaces the circle
+				g2.drawImage(sprite, x, y, sizeX, sizeY, null);
+			} else {
+				// fallback if sprite failed to load
+				g2.setColor(Color.BLUE);
+				g2.fillRect(x, y, sizeX, sizeY);
+			}
 		}
-	}	
 	}
-	
+
 	private static void loadSpriteOnce() {
 		if (triedLoad)
 			return;
@@ -66,15 +65,20 @@ public class Exit extends JComponent implements Interactable {
 			sprite = null;
 		}
 	}
-	
+
 	@Override
 	public void whenInteract(Player player, GameModel model) {
 		model.scoreIncrease();
+		makeExitable(player);
 	}
 
 	public Rectangle getBounds() {
-		Rectangle r = new Rectangle(x, y, sizeX, sizeY);
-		return r;
+		if (exitable) {
+			Rectangle r = new Rectangle(x, y, sizeX, sizeY);
+			return r;
+		} else {
+			return new Rectangle(-5, -5, 2, 2);
+		}
 	}
 
 }

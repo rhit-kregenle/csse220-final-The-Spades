@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Label;
 
@@ -15,11 +16,30 @@ public class StartScreen extends JPanel {
 	public StartScreen(GameWindow window) {
 		this.window = window;
 		
-		this.add(start);
-		this.setLayout(new FlowLayout());
-		JLabel score = new JLabel(Integer.toString(last_score));
+		this.setLayout(new BorderLayout());
 		
-		this.add(score);
+		this.add(start, BorderLayout.CENTER);
+
+		JLabel score = new JLabel("Last Score: " + Integer.toString(last_score));
+		
+		this.add(score, BorderLayout.NORTH);
+		
+		start.addActionListener(e -> {
+		    window.startNewGame();
+		});
+	}
+	
+	public StartScreen(GameWindow window, int last_score) {
+		this.window = window;
+		this.last_score = last_score;
+		
+		this.setLayout(new BorderLayout());
+		
+		this.add(start, BorderLayout.CENTER);
+
+		JLabel score = new JLabel("Last Score: " + Integer.toString(last_score));
+		
+		this.add(score, BorderLayout.NORTH);
 		
 		start.addActionListener(e -> {
 		    window.startNewGame();

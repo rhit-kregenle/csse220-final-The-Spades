@@ -24,8 +24,8 @@ public class GameComponent extends JComponent {
 
 	// gems declaration
 	private ArrayList<Gem> gems = new ArrayList<Gem>();
-	
-	//Power up declaration
+
+	// Power up declaration
 	private ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 
 	// Walls and helper constructs.
@@ -33,6 +33,7 @@ public class GameComponent extends JComponent {
 	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	private Exit exit;
+	private key key;
 
 	public GameComponent(GameModel model, GameWindow window) {
 		this.model = model;
@@ -54,16 +55,34 @@ public class GameComponent extends JComponent {
 			zombieShove();
 
 			gemCollect(model);
+			keyCollect(model);
 			powerUpCollect(model);
 
 			// This is the win condition, will be changed to reaching the exit.
 			if (player.getPlayerBounds().intersects(exit.getBounds())) {
-				this.window.showStart();
+				if (player.hasKey()) {
+					model.levelWon();
+				}
 			}
 
+			if (player.hasKey()) {
+				exit.makeExitable(player);
+			}
 			// The losing condition.
 			if (model.getLives() <= 0) {
 				this.window.showStart();
+			}
+
+			if (model.drawNewLevel()) {
+				gems = new ArrayList<Gem>();
+				zombies = new ArrayList<Zombie>();
+				walls = new ArrayList<Wall>();
+				wall_positions = new HashMap<>();
+				powerUps = new ArrayList<PowerUp>();
+
+				loadLevel(model.getLevel());
+
+				model.newLevelDrawn();
 			}
 
 			repaint();
@@ -88,29 +107,31 @@ public class GameComponent extends JComponent {
 	}
 
 	private void wallBounce() {
-//		for (int i = 0; i < walls.length; i++) {
-//			if (walls[i].getX1() == walls[i].getX2()) {
-//				if (player.getPosX() <= walls[i].getX1() && walls[i].getX1() <= player.getPosX() + player.getSizeX()
-//						&& ((walls[i].getY1() <= player.getPosY() && player.getPosY() <= walls[i].getY2())
-//								|| (walls[i].getY1() <= player.getPosY() + player.getSizeY()
-//										&& player.getPosY() + player.getSizeY() <= walls[i].getY2()))) {
-//					player.flip();
-//					player.update();
-//					player.update();
-//					break;
-//				}
-//			} else {
-//				if (player.getPosY() <= walls[i].getY1() && walls[i].getY1() <= player.getPosY() + player.getSizeY()
-//						&& ((walls[i].getX1() <= player.getPosX() && player.getPosX() <= walls[i].getX2())
-//								|| (walls[i].getX1() <= player.getPosX() + player.getSizeX()
-//										&& player.getPosX() + player.getSizeX() <= walls[i].getX2()))) {
-//					player.flip();
-//					player.update();
-//					player.update();
-//					break;
-//				}
-//			}
-//		}
+		for (int i = 0; i < walls.size(); i++) {
+			if (walls.get(i).getX1() == walls.get(i).getX2()) {
+				if (player.getPosX() <= walls.get(i).getX1()
+						&& walls.get(i).getX1() <= player.getPosX() + player.getSizeX()
+						&& ((walls.get(i).getY1() <= player.getPosY() && player.getPosY() <= walls.get(i).getY2())
+								|| (walls.get(i).getY1() <= player.getPosY() + player.getSizeY()
+										&& player.getPosY() + player.getSizeY() <= walls.get(i).getY2()))) {
+					player.flip();
+					player.update();
+					player.update();
+					break;
+				}
+			} else {
+				if (player.getPosY() <= walls.get(i).getY1()
+						&& walls.get(i).getY1() <= player.getPosY() + player.getSizeY()
+						&& ((walls.get(i).getX1() <= player.getPosX() && player.getPosX() <= walls.get(i).getX2())
+								|| (walls.get(i).getX1() <= player.getPosX() + player.getSizeX()
+										&& player.getPosX() + player.getSizeX() <= walls.get(i).getX2()))) {
+					player.flip();
+					player.update();
+					player.update();
+					break;
+				}
+			}
+		}
 	}
 
 	private void zombieShove() {
@@ -156,7 +177,13 @@ public class GameComponent extends JComponent {
 			}
 		}
 	}
-	
+
+	private void keyCollect(GameModel model) {
+		if (player.getPlayerBounds().intersects(key.getBounds())) {
+			key.whenInteract(player, model);
+		}
+	}
+
 	private void powerUpCollect(GameModel model) {
 		for (PowerUp p : powerUps) {
 			if (player.getPlayerBounds().intersects(p.getBounds())) {
@@ -185,6 +212,7 @@ public class GameComponent extends JComponent {
 		}
 
 		exit.draw(g2);
+		key.draw(g2);
 
 		drawHUD(g2);
 
@@ -235,8 +263,10 @@ public class GameComponent extends JComponent {
 					int xTile = col * TILE_SIZE;
 					int yTile = row * TILE_SIZE;
 
+//					System.out.println(c);
+
 					if (c == 'P') {
-						player = new Player(xTile, yTile, 3, 30, 30);
+						player = new Player(xTile, yTile, 3, 25, 25);
 					} else if (c == 'Z') {
 						zombies.add(new Zombie(xTile, yTile, Direction.DOWN, 50));
 					} else if (c == 'z') {
@@ -244,15 +274,15 @@ public class GameComponent extends JComponent {
 					} else if (c == 'G') {
 						gems.add(new Gem(xTile, yTile));
 					} else if (c == 'K') {
+						key = new key(xTile, yTile, false);
 					} else if (c == 'E') {
 						exit = new Exit(xTile, yTile);
 					} else if (c == 'p') {
 						powerUps.add(new PowerUp(xTile, yTile));
-					}
-
-					if (c != '.') {
-						if (wall_positions.containsKey(Character.toLowerCase(c))) {
-							ArrayList<Integer> startPos = wall_positions.get(c);
+					} else if (c != '.') {
+						if (wall_positions.containsKey((Character) (Character.toLowerCase(c)))) {
+							ArrayList<Integer> startPos = wall_positions.get((Character) (Character.toLowerCase(c)));
+							System.out.println(startPos);
 							if (Character.isUpperCase(c)) {
 								walls.add(new Wall(startPos.get(0), startPos.get(1), xTile, yTile));
 							} else {
@@ -262,17 +292,20 @@ public class GameComponent extends JComponent {
 							ArrayList<Integer> positions = new ArrayList<Integer>();
 							positions.add(xTile);
 							positions.add(yTile);
-							wall_positions.put(c, positions);
+							System.out.println();
+							wall_positions.put(Character.toLowerCase(c), positions);
 						}
 					}
 				}
+
+				System.out.println(row);
 
 				row++;
 			}
 
 			scanner.close();
 		} catch (IOException ex) {
-			this.window.showStart();
+			this.window.showStart(model.getScore());
 		}
 	}
 }
