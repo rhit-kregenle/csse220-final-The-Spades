@@ -4,6 +4,16 @@ public class GameModel {
 	private int score = 0;
 	private int lives = 3;
 	private int level = 1;
+	private boolean drawNewLevel = false;
+	private int freezePowerUp = 0;
+	
+	public int getFreezePowerUp() {
+		return freezePowerUp;
+	}
+	
+	public void setFreezePowerUp(int time) {
+		freezePowerUp = time;
+	}
 	private boolean drawNewLevel = true;
 	
 	public boolean gameOver() {
