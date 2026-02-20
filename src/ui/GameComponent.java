@@ -24,6 +24,9 @@ public class GameComponent extends JComponent {
 
 	// gems declaration
 	private ArrayList<Gem> gems = new ArrayList<Gem>();
+	
+	//Power up declaration
+	private ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 
 	// Walls and helper constructs.
 	private HashMap<Character, ArrayList<Integer>> wall_positions = new HashMap<>();
@@ -51,6 +54,7 @@ public class GameComponent extends JComponent {
 			zombieShove();
 
 			gemCollect(model);
+			powerUpCollect(model);
 
 			// This is the win condition, will be changed to reaching the exit.
 			if (player.getPlayerBounds().intersects(exit.getBounds())) {
@@ -152,6 +156,14 @@ public class GameComponent extends JComponent {
 			}
 		}
 	}
+	
+	private void powerUpCollect(GameModel model) {
+		for (PowerUp p : powerUps) {
+			if (player.getPlayerBounds().intersects(p.getBounds())) {
+				p.whenInteract(player, model);
+			}
+		}
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -181,6 +193,9 @@ public class GameComponent extends JComponent {
 		// TODO: draw based on model state
 		for (Gem gem : gems) {
 			gem.draw(g2);
+		}
+		for (PowerUp powerUp : powerUps) {
+			powerUp.draw(g2);
 		}
 	}
 
@@ -232,6 +247,7 @@ public class GameComponent extends JComponent {
 					} else if (c == 'E') {
 						exit = new Exit(xTile, yTile);
 					} else if (c == 'p') {
+						powerUps.add(new PowerUp(xTile, yTile));
 					}
 
 					if (c != '.') {
