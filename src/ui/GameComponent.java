@@ -16,7 +16,7 @@ import model.*;
 public class GameComponent extends JComponent {
 	private static final int TILE_SIZE = 4;
 
-	private Player player = new Player(300, 500, 4, 20, 20);
+	private Player player;
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	private Timer timer;
 	private GameModel model;
@@ -29,7 +29,7 @@ public class GameComponent extends JComponent {
 	private HashMap<Character, ArrayList<Integer>> wall_positions = new HashMap<>();
 	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
-	private Exit exit = new Exit(500, 100);
+	private Exit exit;
 
 	public GameComponent(GameModel model, GameWindow window) {
 		this.model = model;
