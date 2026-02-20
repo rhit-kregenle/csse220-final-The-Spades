@@ -82,6 +82,9 @@ public class GameComponent extends JComponent {
 
 				loadLevel(model.getLevel());
 				model.newLevelDrawn();
+				
+				triedLoadBg = false;
+				loadBackgroundOnce();
 			}
 
 			repaint();
@@ -103,6 +106,9 @@ public class GameComponent extends JComponent {
 				}
 			}
 		});
+		
+		triedLoadBg = false;
+		loadBackgroundOnce();
 	}
 
 	private void loadBackgroundOnce() {
