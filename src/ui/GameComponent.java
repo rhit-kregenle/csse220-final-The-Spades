@@ -71,7 +71,8 @@ public class GameComponent extends JComponent {
 			}
 			// The losing condition.
 			if (model.getLives() <= 0) {
-				this.window.showStart();
+				this.window.showStart(model.getScore());
+				timer.stop();
 			}
 
 			if (model.drawNewLevel()) {
@@ -263,9 +264,7 @@ public class GameComponent extends JComponent {
 					char c = line.charAt(col);
 					int xTile = col * TILE_SIZE;
 					int yTile = row * TILE_SIZE;
-
-//					System.out.println(c);
-
+					
 					if (c == 'P') {
 						player = new Player(xTile, yTile, 3, 25, 25);
 					} else if (c == 'G') {
@@ -344,7 +343,6 @@ public class GameComponent extends JComponent {
 					} else if (c != '.') {
 						if (wall_positions.containsKey((Character) (Character.toLowerCase(c)))) {
 							ArrayList<Integer> startPos = wall_positions.get((Character) (Character.toLowerCase(c)));
-							System.out.println(startPos);
 							if (Character.isUpperCase(c)) {
 								walls.add(new Wall(startPos.get(0), startPos.get(1), xTile, yTile));
 							} else {
@@ -354,13 +352,10 @@ public class GameComponent extends JComponent {
 							ArrayList<Integer> positions = new ArrayList<Integer>();
 							positions.add(xTile);
 							positions.add(yTile);
-							System.out.println();
 							wall_positions.put(Character.toLowerCase(c), positions);
 						}
 					}
 				}
-
-				System.out.println(row);
 
 				row++;
 			}
