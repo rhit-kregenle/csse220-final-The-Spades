@@ -17,6 +17,7 @@ import javax.swing.Timer;
 import model.Direction;
 import model.Exit;
 import model.Player;
+import model.PowerUp;
 import model.Wall;
 import model.Zombie;
 import model.GameModel;
@@ -39,6 +40,8 @@ public class GameComponent extends JComponent {
 	private Gem gem2 = new Gem(250, 250);
 	private Gem gem3 = new Gem(50, 550);
 	private Gem gem4 = new Gem(550, 250);
+	
+	private PowerUp powerUp1 = new PowerUp(300,300);
 
 	Wall[] walls = { new Wall(0, 150, 100, 150), new Wall(100, 100, 100, 150), new Wall(100, 100, 200, 100),
 			new Wall(200, 000, 200, 100), new Wall(500, 000, 500, 100), new Wall(500, 100, 600, 100),
@@ -68,6 +71,8 @@ public class GameComponent extends JComponent {
 			zombieShove();
 
 			gemCollect(model);
+			powerUpCollect(model);
+			
 
 			// This is the win condition, will be changed to reaching the exit.
 			if (player.getPlayerBounds().intersects(exit.getBounds())) {
@@ -122,8 +127,12 @@ public class GameComponent extends JComponent {
 	}
 
 	private void zombieShove() {
+		model.setFreezePowerUp(model.getFreezePowerUp() - 1);
+		if (model.getFreezePowerUp() >= 10) {
+			return;
+		}
 		for (Zombie zombie : zombies) {
-
+			
 			zombie.update();
 
 			if (player.getPlayerBounds().intersects(zombie.getZombieBounds())) {
@@ -174,6 +183,12 @@ public class GameComponent extends JComponent {
 
 		}
 	}
+	
+	private void powerUpCollect(GameModel model) {
+		if (player.getPlayerBounds().intersects(powerUp1.getBounds())) {
+			powerUp1.whenInteract(player, model);
+		}
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -198,13 +213,15 @@ public class GameComponent extends JComponent {
 
 		drawHUD(g2);
 
-		for (int i = 0; i < walls.length; i++)
+		for (int i = 0; i < walls.length; i++) {
 			walls[i].draw(g2);
-		// TODO: draw based on model state
+		}
 		gem1.draw(g2);
 		gem2.draw(g2);
 		gem3.draw(g2);
 		gem4.draw(g2);
+		
+		powerUp1.draw(g2);
 	}
 
 	private void drawHUD(Graphics2D g) {
