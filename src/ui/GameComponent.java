@@ -247,7 +247,7 @@ public class GameComponent extends JComponent {
 
 		Color orig = g.getColor();
 
-		g.setColor(Color.WHITE);
+		g.setColor(Color.BLACK);
 		g.drawString("Score: " + this.model.getScore(), 10, 20);
 		g.drawString("Lives: " + this.model.getLives(), 10, 45);
 
