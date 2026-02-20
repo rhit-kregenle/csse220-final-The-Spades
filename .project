@@ -14,36 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/model/Door.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/Door.png</locationURI>
-		</link>
-		<link>
-			<name>src/model/Gem.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/Gem.png</locationURI>
-		</link>
-		<link>
-			<name>src/model/Key.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/Key.png</locationURI>
-		</link>
-		<link>
-			<name>src/model/Player.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/Player.png</locationURI>
-		</link>
-		<link>
-			<name>src/model/PowerUp.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/PowerUp.png</locationURI>
-		</link>
-		<link>
-			<name>src/model/Zombie.png</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/Downloads/Zombie.png</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
