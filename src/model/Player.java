@@ -35,7 +35,7 @@ public class Player extends Mobile {
 		this.sizeY = sizeY;
 		this.direction = Direction.UP;
 		loadSpriteOnce();
-		this.delta = 15;
+		this.delta = 5;
 		this.isShoving = 0;
 		this.hasKey = false;
 	}
@@ -54,8 +54,7 @@ public class Player extends Mobile {
 		triedLoad = true;
 
 		try {
-			// tennis.png must be in the SAME package as Ball.java
-			sprite = ImageIO.read(Player.class.getResource("tennis.png"));
+			sprite = ImageIO.read(Player.class.getResource("Player.png"));
 		} catch (IOException | IllegalArgumentException ex) {
 			sprite = null;
 		}
@@ -69,7 +68,7 @@ public class Player extends Mobile {
 
 		if (sprite != null) {
 			// sprite replaces the circle
-			g2.drawImage(sprite, posX, posY, sizeX, sizeY, null);
+			g2.drawImage(sprite, posX - 5, posY - 5, (int) (sizeX * 1.5), (int) (sizeY * 1.5), null);
 		} else {
 			// fallback if sprite failed to load
 			g2.setColor(Color.RED);

@@ -5,17 +5,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 /**
  * @author kolczal
  */
 public class Gem extends JComponent implements Interactable {
-
+	private static BufferedImage sprite = null;
+	private static boolean triedLoad = false;
 	int x;
 	int y;
-	int diameter = 10;
+	int diameter = 20;
 	Color color = Color.RED;
 	boolean collected = false;
 
@@ -24,13 +28,31 @@ public class Gem extends JComponent implements Interactable {
 		this.x = posX;
 
 		this.y = posY;
+		loadSpriteOnce();
 	}
 
 	public void draw(Graphics2D g2) {
 		if (!collected) {
+			if (sprite != null) {
+				// sprite replaces the circle
+				g2.drawImage(sprite, x, y - 2, diameter, (int) (diameter * 1.5), null);
+			} else {
 			g2.setStroke(new BasicStroke(4));
 			g2.setColor(this.color);
 			g2.fillOval(x, y, diameter, diameter);
+			}
+		}
+	}
+	
+	private static void loadSpriteOnce() {
+		if (triedLoad)
+			return;
+		triedLoad = true;
+
+		try {
+			sprite = ImageIO.read(Zombie.class.getResource("Gem.png"));
+		} catch (IOException | IllegalArgumentException ex) {
+			sprite = null;
 		}
 	}
 

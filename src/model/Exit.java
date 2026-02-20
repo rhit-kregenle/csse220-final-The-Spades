@@ -43,9 +43,10 @@ public class Exit extends JComponent implements Interactable {
 
 	public void draw(Graphics2D g2) {
 		if (exitable) {
+			System.out.println();
 			if (sprite != null) {
 				// sprite replaces the circle
-				g2.drawImage(sprite, x, y, sizeX, sizeY, null);
+				g2.drawImage(sprite, x - 5, y - 5, (int) (sizeX * 1.5), (int) (sizeY * 1.5), null);
 			} else {
 				// fallback if sprite failed to load
 				g2.setColor(Color.BLUE);
@@ -60,7 +61,7 @@ public class Exit extends JComponent implements Interactable {
 		triedLoad = true;
 
 		try {
-			sprite = ImageIO.read(Zombie.class.getResource("exit.png"));
+			sprite = ImageIO.read(Exit.class.getResource("Door.png"));
 		} catch (IOException | IllegalArgumentException ex) {
 			sprite = null;
 		}

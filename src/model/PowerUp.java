@@ -5,12 +5,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 public class PowerUp extends JComponent implements Interactable {
-
-
+	private static BufferedImage sprite = null;
+	private static boolean triedLoad = false;
 	int x;
 	int y;
 	int diameter = 10;
@@ -22,6 +25,7 @@ public class PowerUp extends JComponent implements Interactable {
 		this.x = posX;
 
 		this.y = posY;
+		loadSpriteOnce();
 	}
 
 	public void draw(Graphics2D g2) {
@@ -52,6 +56,18 @@ public class PowerUp extends JComponent implements Interactable {
 	public Rectangle getBounds() {
 		Rectangle r = new Rectangle(x, y, diameter, diameter);
 		return r;
+	}
+	
+	private static void loadSpriteOnce() {
+		if (triedLoad)
+			return;
+		triedLoad = true;
+
+		try {
+			sprite = ImageIO.read(Player.class.getResource("PowerUp.png"));
+		} catch (IOException | IllegalArgumentException ex) {
+			sprite = null;
+		}
 	}
 
 	@Override

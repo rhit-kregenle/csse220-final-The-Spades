@@ -131,8 +131,7 @@ public class Zombie extends Mobile {
 		triedLoad = true;
 
 		try {
-			// tennis.png must be in the SAME package as Ball.java
-			sprite = ImageIO.read(Zombie.class.getResource("zombie.png"));
+			sprite = ImageIO.read(Zombie.class.getResource("Zombie.png"));
 		} catch (IOException | IllegalArgumentException ex) {
 			sprite = null;
 		}
@@ -142,7 +141,7 @@ public class Zombie extends Mobile {
 
 		if (sprite != null) {
 			// sprite replaces the circle
-			g2.drawImage(sprite, posX, posY, sizeX, sizeY, null);
+			g2.drawImage(sprite, posX - 5, posY - 5, (int) (sizeX * 1.5), (int) (sizeY * 1.5), null);
 		} else {
 			// fallback if sprite failed to load
 			g2.setColor(Color.BLUE);
