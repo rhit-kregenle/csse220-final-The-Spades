@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.Timer;
 
@@ -23,18 +25,17 @@ public class GameComponent extends JComponent {
 	private GameModel model;
 	private GameWindow window;
 
-	// gems declaration
 	private ArrayList<Gem> gems = new ArrayList<Gem>();
-
-	// Power up declaration
 	private ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 
-	// Walls and helper constructs.
 	private HashMap<Character, ArrayList<Integer>> wall_positions = new HashMap<>();
 	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	private Exit exit;
 	private key key;
+
+	private BufferedImage background;
+	private static boolean triedLoadBg = false;
 
 	public GameComponent(GameModel model, GameWindow window) {
 		this.model = model;
@@ -43,6 +44,7 @@ public class GameComponent extends JComponent {
 		setFocusable(true);
 		requestFocus();
 
+		loadBackgroundOnce();
 		loadLevel(model.getLevel());
 
 		timer = new Timer(50, e -> {
@@ -50,16 +52,12 @@ public class GameComponent extends JComponent {
 			requestFocus();
 
 			wallBounce();
-
 			zombieFlip();
-
 			zombieShove();
-
 			gemCollect(model);
 			keyCollect(model);
 			powerUpCollect(model);
 
-			// This is the win condition, will be changed to reaching the exit.
 			if (player.getPlayerBounds().intersects(exit.getBounds())) {
 				if (player.hasKey()) {
 					model.levelWon();
@@ -69,7 +67,7 @@ public class GameComponent extends JComponent {
 			if (player.hasKey()) {
 				exit.makeExitable(player);
 			}
-			// The losing condition.
+
 			if (model.getLives() <= 0) {
 				this.window.showStart(model.getScore());
 				timer.stop();
@@ -83,7 +81,6 @@ public class GameComponent extends JComponent {
 				powerUps = new ArrayList<PowerUp>();
 
 				loadLevel(model.getLevel());
-
 				model.newLevelDrawn();
 			}
 
@@ -106,6 +103,16 @@ public class GameComponent extends JComponent {
 				}
 			}
 		});
+	}
+
+	private void loadBackgroundOnce() {
+		if (triedLoadBg) return;
+		triedLoadBg = true;
+		try {
+			background = ImageIO.read(GameComponent.class.getResource("/ui/background.png"));
+		} catch (IOException | IllegalArgumentException e) {
+			background = null;
+		}
 	}
 
 	private void wallBounce() {
@@ -138,7 +145,6 @@ public class GameComponent extends JComponent {
 
 	private void zombieShove() {
 		for (Zombie zombie : zombies) {
-
 			zombie.update();
 
 			if (player.getPlayerBounds().intersects(zombie.getZombieBounds())) {
@@ -201,10 +207,13 @@ public class GameComponent extends JComponent {
 
 		Color origColor = g2.getColor();
 
-		// Minimal placeholder to test it’s running
-		Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, 600, 600);
-		g2.setColor(Color.GREEN);
-		g2.fill(rect);
+		if (background != null) {
+			g2.drawImage(background, 0, 0, 600, 600, null);
+		} else {
+			Rectangle2D.Double rect = new Rectangle2D.Double(0, 0, 600, 600);
+			g2.setColor(Color.GREEN);
+			g2.fill(rect);
+		}
 
 		g2.setColor(origColor);
 
@@ -220,7 +229,7 @@ public class GameComponent extends JComponent {
 
 		for (int i = 0; i < walls.size(); i++)
 			walls.get(i).draw(g2);
-		// TODO: draw based on model state
+
 		for (Gem gem : gems) {
 			gem.draw(g2);
 		}
@@ -264,7 +273,7 @@ public class GameComponent extends JComponent {
 					char c = line.charAt(col);
 					int xTile = col * TILE_SIZE;
 					int yTile = row * TILE_SIZE;
-					
+
 					if (c == 'P') {
 						player = new Player(xTile, yTile, 3, 25, 25);
 					} else if (c == 'G') {
@@ -286,21 +295,12 @@ public class GameComponent extends JComponent {
 								Direction traverse = Direction.DOWN;
 								int traverse_length;
 								if (endX != xTile) {
-									if (endX > xTile) {
-										traverse = Direction.RIGHT;
-									} else {
-										traverse = Direction.LEFT;
-									}
+									traverse = endX > xTile ? Direction.RIGHT : Direction.LEFT;
 									traverse_length = Math.abs(endX - xTile);
 								} else {
-									if (endY > yTile) {
-										traverse = Direction.DOWN;
-									} else {
-										traverse = Direction.UP;
-									}
+									traverse = endY > yTile ? Direction.DOWN : Direction.UP;
 									traverse_length = Math.abs(endY - yTile);
 								}
-
 								zombies.add(new Zombie(xTile, yTile, traverse, traverse_length));
 							} else {
 								ArrayList<Integer> startPos = new ArrayList<Integer>();
@@ -317,21 +317,12 @@ public class GameComponent extends JComponent {
 								Direction traverse = Direction.DOWN;
 								int traverse_length;
 								if (startX != xTile) {
-									if (startX > xTile) {
-										traverse = Direction.RIGHT;
-									} else {
-										traverse = Direction.LEFT;
-									}
+									traverse = startX > xTile ? Direction.RIGHT : Direction.LEFT;
 									traverse_length = Math.abs(startX - xTile);
 								} else {
-									if (startY > yTile) {
-										traverse = Direction.DOWN;
-									} else {
-										traverse = Direction.UP;
-									}
+									traverse = startY > yTile ? Direction.DOWN : Direction.UP;
 									traverse_length = Math.abs(startY - yTile);
 								}
-
 								zombies.add(new Zombie(xTile, yTile, traverse, traverse_length));
 							} else {
 								ArrayList<Integer> startPos = new ArrayList<Integer>();
@@ -341,8 +332,8 @@ public class GameComponent extends JComponent {
 							}
 						}
 					} else if (c != '.') {
-						if (wall_positions.containsKey((Character) (Character.toLowerCase(c)))) {
-							ArrayList<Integer> startPos = wall_positions.get((Character) (Character.toLowerCase(c)));
+						if (wall_positions.containsKey(Character.toLowerCase(c))) {
+							ArrayList<Integer> startPos = wall_positions.get(Character.toLowerCase(c));
 							if (Character.isUpperCase(c)) {
 								walls.add(new Wall(startPos.get(0), startPos.get(1), xTile, yTile));
 							} else {
@@ -356,10 +347,8 @@ public class GameComponent extends JComponent {
 						}
 					}
 				}
-
 				row++;
 			}
-
 			scanner.close();
 		} catch (IOException ex) {
 			timer.stop();
@@ -368,9 +357,7 @@ public class GameComponent extends JComponent {
 	}
 
 	public static boolean isNumeric(String strNum) {
-		if (strNum == null) {
-			return false;
-		}
+		if (strNum == null) return false;
 		try {
 			Double.parseDouble(strNum);
 			return true;
