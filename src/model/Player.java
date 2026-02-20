@@ -35,7 +35,7 @@ public class Player extends Mobile {
 		this.sizeY = sizeY;
 		this.direction = Direction.UP;
 		loadSpriteOnce();
-		this.delta = 15;
+		this.delta = 5;
 		this.isShoving = 0;
 		this.hasKey = false;
 	}
