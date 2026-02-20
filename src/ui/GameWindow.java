@@ -43,4 +43,12 @@ public class GameWindow {
 		cl.show(cards, "GAME");
 		component.startTimer();
 	}
+	
+	public void showStart(int lastScore) {
+		CardLayout cl = (CardLayout) cards.getLayout();
+
+		cards.removeAll();
+		cards.add(new StartScreen(this, lastScore), "START");
+		cl.show(cards, "START");
+	}
 }
