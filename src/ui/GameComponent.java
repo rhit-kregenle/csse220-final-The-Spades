@@ -145,20 +145,23 @@ public class GameComponent extends JComponent {
 
 	private void zombieShove() {
 		for (Zombie zombie : zombies) {
-			zombie.update();
-
-			if (player.getPlayerBounds().intersects(zombie.getZombieBounds())) {
-				if (player.getIsShoving() >= 5) {
-					zombie.getShoved(player.getShovingDirection());
-					player.flip();
-					player.update();
-					player.update();
-				} else {
-					this.model.livesDecrease();
-					player.flip();
-					zombie.flip();
-					player.update();
-					player.update();
+			model.setFreezePowerUp(model.getFreezePowerUp() - 1);
+			if (model.getFreezePowerUp() <= 0) {
+				zombie.update();
+	
+				if (player.getPlayerBounds().intersects(zombie.getZombieBounds())) {
+					if (player.getIsShoving() >= 5) {
+						zombie.getShoved(player.getShovingDirection());
+						player.flip();
+						player.update();
+						player.update();
+					} else {
+						this.model.livesDecrease();
+						player.flip();
+						zombie.flip();
+						player.update();
+						player.update();
+					}
 				}
 			}
 		}
