@@ -14,17 +14,14 @@ public class GameWindow {
 
 	public void show() {
 		// Minimal model instance (empty for now, by design)
-		
-		
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		cards.add(startScreen, "START");
 		CardLayout cl = (CardLayout) cards.getLayout();
 		cl.show(cards, "START");
-		
-		frame.setContentPane(cards);
 
+		frame.setContentPane(cards);
 
 		frame.setSize(615, 640);
 		frame.setLocationRelativeTo(null); // center on screen (nice UX, still minimal)
@@ -37,7 +34,6 @@ public class GameWindow {
 		cards.removeAll();
 		cards.add(startScreen, "START");
 		cl.show(cards, "START");
-
 	}
 
 	public void startNewGame() {
