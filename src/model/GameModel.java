@@ -14,6 +14,7 @@ public class GameModel {
 	public void setFreezePowerUp(int time) {
 		freezePowerUp = time;
 	}
+	private boolean drawNewLevel = true;
 	
 	public boolean gameOver() {
 		if (lives == 0) return true;
@@ -26,6 +27,10 @@ public class GameModel {
 
 	public int getLives() {
 		return lives;
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 	
 	public void scoreIncrease() {
