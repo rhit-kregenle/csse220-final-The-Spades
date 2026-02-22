@@ -43,7 +43,6 @@ public class Exit extends JComponent implements Interactable {
 
 	public void draw(Graphics2D g2) {
 		if (exitable) {
-			System.out.println();
 			if (sprite != null) {
 				// sprite replaces the circle
 				g2.drawImage(sprite, x - 5, y - 5, (int) (sizeX * 1.5), (int) (sizeY * 1.5), null);

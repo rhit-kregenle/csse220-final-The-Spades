@@ -43,7 +43,6 @@ public class StartScreen extends JPanel {
 	}
 	
 	public StartScreen(GameWindow window, int last_score) {
-		System.out.println("test");
 		this.window = window;
 		this.last_score = last_score;
 		
