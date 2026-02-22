@@ -8,6 +8,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
+/**
+ * StartScreen
+ * 
+ * Purpose: StartScreen keeps track of the score of the last run the player had,
+ * and provides a method to start the game once again.
+ * 
+ * @author Manas Paranjape
+ */
+
 public class StartScreen extends JPanel {
 	private JButton start = new JButton("Start");
 	private int last_score;

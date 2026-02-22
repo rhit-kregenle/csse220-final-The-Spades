@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Mobile is a super class for Player and Zombie.
+ * Mobile is a super class for Player and Zombie. It
+ * helps avoid redundancy and condenses logic.
  * 
  * @author Manas Paranjape
  */

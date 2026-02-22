@@ -1,12 +1,5 @@
 package app;
 
-/**
- * The main class that runs the game when it starts.
- * 
- * 
- * @author Manas Paranjape
- */
-
 import javax.swing.SwingUtilities;
 
 import ui.GameWindow;
@@ -14,7 +7,7 @@ import ui.GameWindow;
 /**
  * Class: MainApp
  * 
- * @author Put your team name here <br>
+ * @author The Spades
  *         Purpose: Top level class for CSSE220 Project containing main method
  *         Entry point for the final project.
  */

@@ -1,7 +1,8 @@
 package model;
 
 /**
- * Wall have the positions of the lines draw to make the maze.
+ * Wall have the positions of the lines drawn to make the maze.
+ * The serve as solid barriers for the player, but do not interact with zombies.
  * 
  * @author Luc Kolczak
  */

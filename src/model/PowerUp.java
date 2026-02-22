@@ -11,6 +11,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+/** 
+ * @author Leif Kregenow
+ * 
+ * Purpose: This class represents the freeze power-up entity, which is able to
+ * temporarily halt the movement of zombies in the game.
+ */
+
 public class PowerUp extends JComponent implements Interactable {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;

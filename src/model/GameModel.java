@@ -1,5 +1,15 @@
 package model;
 
+/**
+ * GameModel
+ * 
+ * Purpose: GameModel tracks the state of the game, including levels, lives,
+ * score, etc. It also is able to track whether to load another level or if
+ * the game is over.
+ * 
+ * @author The Spades
+ */
+
 public class GameModel {
 	private int score = 0;
 	private int lives = 3;

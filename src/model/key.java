@@ -10,6 +10,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/** 
+ * @author Luc Kolczak
+ * 
+ * Purpose: Represent the key entity required to move past each level.
+ */
+
 public class key implements Interactable {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
