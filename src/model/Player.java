@@ -3,7 +3,8 @@ package model;
 /**
  * As a moving object, it is a child of Mobile.
  * 
- * Player moves and changes direction based on inputs.
+ * Player moves and changes direction based on inputs. It is generally able to
+ * collide with entities that implement Collidable.
  * 
  * @author Leif Kregenow
  */

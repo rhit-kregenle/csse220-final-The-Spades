@@ -15,6 +15,16 @@ import javax.swing.Timer;
 
 import model.*;
 
+
+/**
+ * The GameComponent is responsible for drawing all entities on screen,
+ * providing a slight framework for entity collisions and running the timer,
+ * and finally passing back control of the game to the main window on a win or
+ * lose condition.
+ * 
+ * @author The Spades
+ */
+
 public class GameComponent extends JComponent {
 	private static final int TILE_SIZE = 4;
 

@@ -7,6 +7,16 @@ import javax.swing.JPanel;
 
 import model.GameModel;
 
+/**
+ * GameWindow
+ * 
+ * Purpose: GameWindow houses a GameComponent and a start screen and switches
+ * between them or generates new ones as necessary.
+ * 
+ * @author Manas Paranjape
+ */
+
+
 public class GameWindow {
 	private JFrame frame = new JFrame("CSSE220 Final Project");
 	private JPanel cards = new JPanel(new CardLayout());

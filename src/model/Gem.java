@@ -12,7 +12,13 @@ import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 /**
- * @author kolczal
+ * Gem 
+ * 
+ * Purpose: Gem is a simple entity that grants players extra points for
+ * collecting one. It tracks its own state and can cue the model to grant the
+ * player points.
+ * 
+ * @author Manas Paranjape
  */
 public class Gem extends JComponent implements Interactable {
 	private static BufferedImage sprite = null;
