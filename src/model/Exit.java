@@ -19,11 +19,11 @@ import javax.swing.JComponent;
  */
 
 public class Exit extends JComponent implements Interactable {
-	int x;
-	int y;
-	int sizeX = 50;
-	int sizeY = 50;
-	boolean exitable = false;
+	private int x;
+	private int y;
+	private int sizeX = 50;
+	private int sizeY = 50;
+	private boolean exitable = false;
 
 	// Sprite related fields.
 	private static BufferedImage sprite = null;
@@ -43,7 +43,6 @@ public class Exit extends JComponent implements Interactable {
 
 	public void draw(Graphics2D g2) {
 		if (exitable) {
-			System.out.println();
 			if (sprite != null) {
 				// sprite replaces the circle
 				g2.drawImage(sprite, x - 5, y - 5, (int) (sizeX * 1.5), (int) (sizeY * 1.5), null);

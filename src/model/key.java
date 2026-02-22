@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-/** 
+/**
  * @author Luc Kolczak
  * 
  * Purpose: Represent the key entity required to move past each level.
@@ -19,12 +19,12 @@ import javax.imageio.ImageIO;
 public class key implements Interactable {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
-	int x;
-	int y;
-	boolean beenCollected = false;
+	private int x;
+	private int y;
+	private boolean beenCollected = false;
 
 	public key(int locX, int locY, boolean collected) {
-		
+
 		this.x = locX;
 		this.y = locY;
 		this.beenCollected = collected;
@@ -36,7 +36,7 @@ public class key implements Interactable {
 		beenCollected = true;
 		player.setHasKey();
 	}
-	
+
 	private static void loadSpriteOnce() {
 		if (triedLoad)
 			return;
@@ -55,11 +55,11 @@ public class key implements Interactable {
 				// sprite replaces the circle
 				g2.drawImage(sprite, x - 2, y - 2, 15, 30, null);
 			} else {
-			Rectangle2D rect = new Rectangle2D.Double(x, y, 10, 20);
-			Color orig = g2.getColor();
-			g2.setColor(Color.YELLOW);
-			g2.fill(rect);
-			g2.setColor(orig);
+				Rectangle2D rect = new Rectangle2D.Double(x, y, 10, 20);
+				Color orig = g2.getColor();
+				g2.setColor(Color.YELLOW);
+				g2.fill(rect);
+				g2.setColor(orig);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class key implements Interactable {
 	public boolean getKeyCollected() {
 		return beenCollected;
 	}
-	
+
 	public Rectangle2D getBounds() {
 		return new Rectangle2D.Double(x, y, 5, 10);
 	}

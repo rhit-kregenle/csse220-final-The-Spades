@@ -19,13 +19,13 @@ import javax.imageio.ImageIO;
  */
 
 public class Zombie extends Mobile {
-	Direction traverseDirection;
-	int traverseLength;
-	int startingX;
-	int startingY;
+	private Direction traverseDirection;
+	private int traverseLength;
+	private int startingX;
+	private int startingY;
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
-	Boolean onPath;
+	private Boolean onPath;
 
 	
 	/**

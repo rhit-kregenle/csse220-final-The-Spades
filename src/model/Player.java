@@ -22,7 +22,7 @@ public class Player extends Mobile {
 	private int currentLives;
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
-	Direction direction;
+	private Direction direction;
 	private int isShoving;
 	private Direction shovingDirection;
 	private boolean hasKey;
