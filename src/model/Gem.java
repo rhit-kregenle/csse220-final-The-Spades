@@ -23,11 +23,11 @@ import javax.swing.JComponent;
 public class Gem extends JComponent implements Interactable {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
-	int x;
-	int y;
-	int diameter = 20;
-	Color color = Color.RED;
-	boolean collected = false;
+	private int x;
+	private int y;
+	private int diameter = 20;
+	private Color color = Color.RED;
+	private boolean collected = false;
 
 	public Gem(int posX, int posY) {
 

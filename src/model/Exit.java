@@ -19,11 +19,11 @@ import javax.swing.JComponent;
  */
 
 public class Exit extends JComponent implements Interactable {
-	int x;
-	int y;
-	int sizeX = 50;
-	int sizeY = 50;
-	boolean exitable = false;
+	private int x;
+	private int y;
+	private int sizeX = 50;
+	private int sizeY = 50;
+	private boolean exitable = false;
 
 	// Sprite related fields.
 	private static BufferedImage sprite = null;

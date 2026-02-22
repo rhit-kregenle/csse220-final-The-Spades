@@ -21,11 +21,11 @@ import javax.swing.JComponent;
 public class PowerUp extends JComponent implements Interactable {
 	private static BufferedImage sprite = null;
 	private static boolean triedLoad = false;
-	int x;
-	int y;
-	int diameter = 10;
-	Color color = new Color(173, 216, 230);;
-	boolean collected = false;
+	private int x;
+	private int y;
+	private int diameter = 10;
+	private Color color = new Color(173, 216, 230);;
+	private boolean collected = false;
 
 	public PowerUp(int posX, int posY) {
 
